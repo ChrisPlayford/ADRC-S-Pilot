@@ -1,0 +1,70 @@
+capture drop ncds_dadnssec
+gen ncds_dadnssec = .
+replace ncds_dadnssec = 1 if (pa_nssec>=1)&(pa_nssec<=2) 
+/*1.1 large employers and higher managerial*/
+replace ncds_dadnssec = 2 if (pa_nssec>=3.1)&(pa_nssec<=3.4) 
+/*higher professional occupations*/
+replace ncds_dadnssec = 3 if (pa_nssec>=4.1)&(pa_nssec<=6) 
+/*lower managerial and professional*/
+replace ncds_dadnssec = 4 if (pa_nssec>=7.1)&(pa_nssec<=7.4) 
+/*intermediate*/
+replace ncds_dadnssec = 5 if (pa_nssec>=8.1)&(pa_nssec<=9.2) 
+/*small employers and own account*/
+replace ncds_dadnssec = 6 if (pa_nssec>=10)&(pa_nssec<=11.2) 
+/*lower supervisory and technical*/
+replace ncds_dadnssec = 7 if (pa_nssec>=12.1)&(pa_nssec<=12.7) 
+/*semiroutine*/
+replace ncds_dadnssec = 8 if (pa_nssec>=13.1)&(pa_nssec<=13.5) 
+/*routine*/
+tab ncds_dadnssec
+label variable ncds_dadnssec "Father's NSSEC"
+label define nssec 1 "Large Employers and Higher Managerial" ///
+2 "Higher Professional Occupations" 3 "Lower managerial and professional" ///
+4 "Intermediate" 5 "Small employers and own account" ///
+6 "Lower Supervisory and Technical" 7 "Semi-Routine" ///
+8 "Routine"
+label values ncds_dadnssec nssec
+numlabel, add
+tab ncds_dadnssec, mi
+
+
+capture drop ncds_dadnssecr5
+gen ncds_dadnssecr5 = .
+replace ncds_dadnssecr5 = 1 if (ncds_dadnssec>=1)&(ncds_dadnssec<=3) 
+/*1 Higher managerial, administrative and professional occupations*/
+replace ncds_dadnssecr5 = 2 if (ncds_dadnssec==4)
+/*Intermediate occupations*/
+replace ncds_dadnssecr5 = 3 if (ncds_dadnssec==5)
+/*Small employers and own account workers*/
+replace ncds_dadnssecr5 = 4 if (ncds_dadnssec==6)
+/*Lower supervisory and technical occupations*/
+replace ncds_dadnssecr5 = 5 if (ncds_dadnssec>=7)&(ncds_dadnssec<=8) 
+/*semi-routine and routine occupations*/
+tab ncds_dadnssecr5
+label variable ncds_dadnssecr5 "Father's NSSEC"
+label define nssecr5 ///
+1 "Higher managerial, administrative and professional occupations" ///
+2 "Intermediate occupations" 3 "Small employers and own account workers" ///
+4 "Lower supervisory and technical occupations" ///
+5 "semi-routine and routine occupations" 
+label values ncds_dadnssecr5 nssecr5
+numlabel, add
+tab ncds_dadnssecr5, mi
+
+capture drop ncds_dadnssecr3
+gen ncds_dadnssecr3 = .
+replace ncds_dadnssecr3 = 1 if (ncds_dadnssecr5==1)
+/*1 Higher managerial, administrative and professional occupations*/
+replace ncds_dadnssecr3 = 2 if (ncds_dadnssecr5==2)|(ncds_dadnssecr5==3)
+/*Intermediate occupations*/
+replace ncds_dadnssecr3 = 3 if (ncds_dadnssecr5==4)|(ncds_dadnssecr5==5)
+/*Routine and Manual Occupations*/
+tab ncds_dadnssecr3
+label variable ncds_dadnssecr3 "Father's NSSEC"
+label define nssecr3 ///
+1 "Higher managerial, administrative and professional occupations" ///
+2 "Intermediate occupations" ///
+3 "Routine and Manual Occupations"
+label values ncds_dadnssecr3 nssecr3
+numlabel, add
+tab ncds_dadnssecr3, mi
